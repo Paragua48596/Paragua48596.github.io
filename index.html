@@ -5,5 +5,20 @@
     <h1>Hello world!</h1>
     <video id="video" width="640" height="480" autoplay></video>
     <!-- Dont for get to link your JavaScript -->
+    <script>
+      // Get the video element
+      const video = document.querySelector('#video')
+      // Check if device has camera
+      if (navigator.mediaDevices && navigator.mediaDevices.getUserMedia) {
+        // Use video without audio
+        const constraints = { 
+          video: true,
+          audio: false
+        }
+
+        // Start video stream
+        navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
+      }
+    </script>
   </body>
 </html>
