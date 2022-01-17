@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello World!</h1>
+    <h1>Hello QR!</h1>
     <div id="video"></div>
 
     <!--<script src="scripts.js"></script>-->
@@ -30,6 +30,7 @@
         }
 
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+            navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(stream => video.srcObject = stream);
             html5Qrcode.start({facingMode: 'environment'}, config, qrCodeSuccessCallback)
         }
 
