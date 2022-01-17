@@ -1,38 +1,42 @@
 <!DOCTYPE html>
-<html>
-  <head>
-  </head>
-  <body>
-    <video id="video" height="400px" width="400px" autoplay>
-      
-      <script>
-        
-        //Capturamos el elemento de video
-        const video = document.querySelector('#video')
-        
-        //Verificamos si el dispositivo tiene camaras
-        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
-          const constraints = {
-            video: {
-                width: {
-                    min: 1280,
-                },
-                height: {
-                    min: 720,
-                },
-                facingMode: {
-                    exact: 'environment'    
-                }
-                
-            }
-          }
-          
-           //Empezamos a transmitir la camara en el elemento de video
-           navigator.mediaDevices.getUserMedia(constraints).then(stream => video.srcObject = stream);
-          
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <script src="https://unpkg.com/html5-qrcode" type="text/javascript"></script>
+    <title>Document</title>
+</head>
+<body>
+    <div id="video"></div>
+
+    <!--<script src="scripts.js"></script>-->
+    <script>
+        const html5Qrcode = new Html5Qrcode('video')
+        const qrCodeSuccessCallback = (decodedText, decodedResult) => {
+            //Manejo de si el codigo es exitosamente escaneado
+            alert("Texto del codigo: " + decodedText)
+            alert("Resultado: " + decodedResult)
         }
-        
-      </script>
-  </body>
-  
+
+        //Configuraciones de la camara
+        const config = {
+            fps: 10,
+            qrbox: {
+                width: 250,
+                height: 250
+            }
+        }
+
+        html5Qrcode.start({facingMode: 'environment'}, config, qrCodeSuccessCallback)
+
+        setTimeout(() => {
+            html5Qrcode.stop().then((ignore) => {
+
+            }).catch((err) => {
+
+            })
+        }, 10000)
+    </script>
+</body>
 </html>
