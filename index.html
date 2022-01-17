@@ -31,12 +31,6 @@
       }
       
       
-      let formats;
-      // Save all formats to formats var 
-      BarcodeDetector.getSupportedFormats().then(arr => formats = arr);
-      // Create new barcode detector with all supported formats
-      const barcodeDetector = new BarcodeDetector({ formats });
-      
         // Create new barcode detector
         const barcodeDetector = new BarcodeDetector({ formats: ['qr_code'] });
 
