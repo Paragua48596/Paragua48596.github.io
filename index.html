@@ -15,8 +15,8 @@
         const html5Qrcode = new Html5Qrcode('video')
         const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             //Manejo de si el codigo es exitosamente escaneado
-            alert("Texto del codigo: " + decodedText)
-            alert("Resultado: " + decodedResult)
+            console.log("Texto del codigo: " + decodedText)
+            console.log("Resultado: " + decodedResult)
         }
 
         //Configuraciones de la camara
@@ -28,9 +28,14 @@
             }
         }
 
-        html5Qrcode.start({facingMode: 'environment'}, config, qrCodeSuccessCallback)
-/*
-        setTimeout(() => {
+        if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
+            html5Qrcode.start({facingMode: 'environment'}, config, qrCodeSuccessCallback)
+        }
+
+
+        
+
+        /*setTimeout(() => {
             html5Qrcode.stop().then((ignore) => {
 
             }).catch((err) => {
