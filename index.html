@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello Barcodes!</h1>
+    <h1>Hello Barcodes i love you them!</h1>
     <div id="video"></div>
 
     <!--<script src="scripts.js"></script>-->
@@ -16,8 +16,14 @@
         const html5Qrcode = new Html5Qrcode('video')
         const qrCodeSuccessCallback = (decodedText, decodedResult) => {
             //Manejo de si el codigo es exitosamente escaneado
-            console.log("Texto del codigo: " + decodedText)
-            console.log("Resultado: " + decodedResult)
+            alert("Texto del codigo: " + decodedText)
+            alert("Resultado: " + decodedResult)
+            
+            html5Qrcode.stop().then((ignore) => {
+
+            }).catch((err) => {
+
+            })
         }
 
         //Configuraciones de la camara
