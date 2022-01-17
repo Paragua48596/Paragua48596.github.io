@@ -8,7 +8,7 @@
     <title>Document</title>
 </head>
 <body>
-    <h1>Hello QR!</h1>
+    <h1>Hello QR codes!</h1>
     <div id="video"></div>
 
     <!--<script src="scripts.js"></script>-->
@@ -28,6 +28,9 @@
                 height: 250
             }
         }
+        
+        
+        const video = document.querySelector('#video')
 
         if(navigator.mediaDevices && navigator.mediaDevices.getUserMedia){
             navigator.mediaDevices.getUserMedia({video: true, audio: false}).then(stream => video.srcObject = stream);
