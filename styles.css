@@ -1,0 +1,263 @@
+@import url('https://fonts.googleapis.com/css2?family=Rubik:wght@300;400;500;600;700;800;900&display=swap');
+
+:root {
+    --color-brand: #073fdb;
+    --light: #f5f5f5;
+    --dark: #0c0f0a;
+    --font: 'Rubik', sans-serif;
+    --blue-one: #4361ee;
+    --blue-two: #3a0ca3;
+    --blue-three: #7209b7;
+    --blue-four: #f72585;
+    --red: #e71d36;
+    --green: #0fdb60;
+}
+
+* {
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+}
+
+body {
+    max-width: 100vw;
+    width: 100%;
+    min-height: 100vh;
+    background: var(--light);
+    font-family: var(--font);
+
+    display: flex;
+    flex-direction: column;
+}
+
+.container {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+}
+
+.flex, .grid {
+    width: 100%;
+    height: 100%;
+    flex: 1;
+}
+
+/*Server messages*/
+
+.server {
+    width: 100%;
+    position: fixed;
+    top: -100px;
+    left: 0;
+    right: 0;
+    z-index: 100000;
+    animation-duration: 3.5s;
+    animation-name: show;
+    animation-iteration-count: 1;
+}
+
+@keyframes show {
+    0% {
+        top: -100px;
+    }
+
+    10% {
+        top: 0;
+    }
+
+    90% {
+        top: 0;
+    }
+
+    100% {
+        top: -100px;
+    }
+}
+
+.server__message {
+    margin: 10px;
+    padding: 20px;
+    display: block;
+    border-radius: 8px;
+    color: #FFF;
+    text-align: center;
+}
+
+.danger {
+    background: var(--red); 
+}
+
+.safe {
+    background: var(--green)
+}
+
+/*Menu*/
+
+.menu {
+    padding: 15px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: var(--color-brand);
+    box-shadow: 1px 3px 5px #aaa;
+}
+
+.menu__buttons {
+    display: flex;
+}
+
+.nivelacion {
+    color: #FFF;
+    text-decoration: none;
+    padding: 10px;
+    border: 1px solid #FFF;
+    border-radius: 5px;
+    transition: 0.2s;
+}
+
+.nivelacion:hover {
+    background: #FFF;
+    color: var(--color-brand);
+}
+
+.plus > a {
+    text-decoration: none;
+    color: #FFF;
+    display: block;
+}
+
+.plus {
+    width: 100px;
+    font-size: 1.2rem;
+    background: var(--green);
+    transition: 0.2s;
+}
+
+.plus:hover {
+    background: #1f8428;
+}
+
+.brand {
+    font-size: 1.5rem;
+    font-weight: 800;
+    text-transform: uppercase;
+}
+
+.brand__link {
+    color: #fff;
+    text-decoration: none;
+}
+
+.admin-btn {
+    padding: 5px;
+    background: var(--color-brand);
+    border: none;
+    border-radius: 5px;
+    transition: 0.3s;
+}
+
+.admin-btn:hover {
+    background: #0740dba1;
+}
+
+.admin-link {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.admin-icon {
+    width: 1.5rem;
+    filter: invert(97%) sepia(0%) saturate(7486%) hue-rotate(80deg) brightness(106%) contrast(108%);
+}
+
+label {
+    text-transform: uppercase;
+    font-size: 1.1rem;
+    font-weight: 500;
+    color: #0000005f;
+}
+
+.admin-btn {
+    width: 34px;
+    margin: 20px;
+}
+
+.app {
+    background: #FFF;
+    border: 1px solid #000;
+    width: 90%;
+    max-width: 600px;
+    margin: 100px auto 0;
+    border-radius: 3px;
+    padding: 30px;
+}
+.app h1 {
+    font-size: 25px;
+    color: var(--color-brand);
+    font-weight: 600;
+    border-bottom: 1px solid #333;
+    padding-bottom: 30px;
+}
+.quiz {
+    padding: 20px 0;
+}
+.quiz h2 {
+    font-size: 1.1rem;
+    color: #000;
+    font-weight: 400;
+    margin: 10px 0;
+}
+.btn {
+    background: #FFF;
+    color: #222;
+    font-weight: 500;
+    width: 100%;
+    border: 1px solid #222;
+    padding: 10px;
+    margin: 10px 0;
+    text-align: left;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.3s;
+}
+.btn:hover:not([disabled]) {
+    background: #222;
+    color: #FFF;
+}
+.btn:disabled{
+    cursor: no-drop;
+}
+#next-btn {
+    background: var(--color-brand);
+    color: #FFF;
+    font-weight: 500;
+    width: 150px;
+    border: 0;
+    padding: 10px;
+    margin: 20px auto 0;
+    border-radius: 4px;
+    cursor: pointer;
+    display: none;
+}
+.correct {
+    background: #9aeabc;
+}
+.incorrect {
+    background-color: #ff9393;
+}
+.note {
+    font-style: italic;
+    font-weight: 100;
+    font-size: 0.9rem;
+}
+
+.explanation {
+    margin: 1rem 0;
+}
+
+.explanation__title {
+    text-transform: uppercase;
+    color: var(--color-brand);
+    font-weight: bold;
+}

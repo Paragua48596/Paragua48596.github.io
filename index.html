@@ -1,0 +1,152 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Ejercicios de probabilidad</title>
+    <link rel="stylesheet" href="styles.css">
+    <!--LaTeX-->
+    <script type="text/x-mathjax-config">
+        MathJax.Hub.Config({
+          jax: ["input/TeX", "output/HTML-CSS"],
+          extensions: ["tex2jax.js"],
+          "HTML-CSS": { preferredFont: "TeX", availableFonts: ["STIX","TeX"] },
+          tex2jax: { inlineMath: [ ["$", "$"], ["\\(","\\)"] ], displayMath: [ ["$$","$$"], ["\\[", "\\]"] ], processEscapes: true, ignoreClass: "tex2jax_ignore|dno" },
+          TeX: { noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
+          messageStyle: "none"
+        });
+        </script>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
+</head>
+<body>
+    <main class="container">
+    
+        <div class="app">
+            <div class="quiz">
+                <h2 id="question">Question goes here</h2>
+
+                <div class="explanation" id="explanationContainer">
+                    <p class="explanation__title" id="explanationTitle">Explicación:</p>
+                    <p class="explanation__text" id="explanation">Explanation goes here</p>
+                </div>
+
+                <div id="answer-buttons">
+                    <button class="btn">Answer 1</button>
+                    <button class="btn">Answer 2</button>
+                    <button class="btn">Answer 3</button>
+                    <button class="btn">Answer 4</button>
+                </div>
+                <p class="note">* Por favor, recargue la p&aacute;gina si no se muestran las expresiones matem&aacute;ticas correctamente</p>
+                <button id="next-btn">Next</button>
+            </div>
+        </div>
+    </main>
+
+    <script>
+        const questions = []; //Array de preguntas
+
+        const questionElement = document.getElementById('question')
+        const answerButtons = document.getElementById('answer-buttons')
+        const nextButton = document.getElementById('next-btn')
+        const explanationContainer = document.getElementById('explanationContainer')
+        const explanation = document.getElementById('explanation')
+
+        let currentQuestionIndex = 0;
+        let score = 0;
+
+        function startQuiz(){
+            currentQuestionIndex = 0;
+            score = 0;
+            nextButton.innerHTML = "Siguiente";
+            showQuestion()
+        }
+
+        function showQuestion(){
+            resetState();
+            let currentQuestion = questions[currentQuestionIndex];
+            let questionNo = currentQuestionIndex + 1
+            questionElement.innerHTML = questionNo + ". " + currentQuestion.questionSanitized;
+            explanation.innerHTML = currentQuestion.explanationSanitized;
+
+            currentQuestion.answers.forEach(answer => {
+                const button = document.createElement('button')
+
+                let text = new DOMParser().parseFromString(answer.textSanitized, "text/xml");
+                let textString;
+
+                // Check if parsing was successful
+                if (text.getElementsByTagName('parsererror').length === 0) {
+                    // Access text content using textContent
+                    textString = text.documentElement.textContent;
+                }
+
+                button.innerHTML = textString ? textString : answer.textSanitized;
+                button.classList.add('btn');
+                answerButtons.appendChild(button);
+                if(answer.correct){
+                    button.dataset.correct = answer.correct;
+                }
+                button.addEventListener('click', selectAnswer)
+            })
+            // Re-render MathJax
+            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
+        }
+
+        function resetState(){
+            explanationContainer.style.display = 'none'
+            nextButton.style.display = 'none';
+            while(answerButtons.firstChild){
+                answerButtons.removeChild(answerButtons.firstChild);
+            }
+        }
+
+        function selectAnswer(e){
+            const selectedBtn = e.target;
+            const isCorrect = selectedBtn.dataset.correct === 'true';
+            if(isCorrect){
+                selectedBtn.classList.add('correct');
+                score++
+            } else {
+                selectedBtn.classList.add('incorrect')
+            }
+            Array.from(answerButtons.children).forEach(button => {
+                if(button.dataset.correct === 'true'){
+                    button.classList.add('correct')
+                }
+                button.disabled = 'true'
+            });
+
+            explanationContainer.style.display = 'block'
+            nextButton.style.display = 'block';
+        }
+
+        function showScore(){
+            resetState();
+            questionElement.innerHTML = `Has obtenido ${score} de ${questions.length} respuestas acertadas!`;
+            nextButton.innerHTML = 'Hacerlo nuevamente'
+            nextButton.style.display = 'block'
+        }
+
+        function handleNextButton(){
+            currentQuestionIndex++;
+            if(currentQuestionIndex < questions.length){
+                showQuestion();
+            } else {
+                showScore();
+            }
+        }
+
+        nextButton.addEventListener('click', () => {
+            if(currentQuestionIndex < questions.length){
+                handleNextButton();
+            }else {
+                startQuiz();
+            }
+        })
+
+        if(questions.length > 0){
+            startQuiz();
+        }
+    </script>
+</body>
+</html>
