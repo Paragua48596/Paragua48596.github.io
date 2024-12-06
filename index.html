@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -15,20 +16,23 @@
           TeX: { noUndefined: { attributes: { mathcolor: "red", mathbackground: "#FFEEEE", mathsize: "90%" } } },
           messageStyle: "none"
         });
-        </script>
+
+        MathJax.typeset([document.getElementById("math")]);
+    </script>
     <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.1/MathJax.js"></script>
 </head>
+
 <body>
     <main class="container">
-    
+
         <div class="app">
-            <div class="quiz">
+            <div class="quiz" id="math">
                 <h2 id="question">Question goes here</h2>
 
-                <div class="explanation" id="explanationContainer">
+                <!--<div class="explanation" id="explanationContainer">
                     <p class="explanation__title" id="explanationTitle">Explicación:</p>
                     <p class="explanation__text" id="explanation">Explanation goes here</p>
-                </div>
+                </div>-->
 
                 <div id="answer-buttons">
                     <button class="btn">Answer 1</button>
@@ -42,110 +46,131 @@
     </main>
 
     <script>
-        const questions = []; //Array de preguntas
+        const questions = [
+            {
+                question: "Al lanzar dos dados, ¿cuál de las siguientes afirmaciones es verdadera?",
+                answers: [
+                    { text: "La probabilidad de obtener dos números pares es 5/36" , correct: false },
+                    { text: "La probabilidad de obtener dos números compuestos es 1/2", correct: false },
+                    { text: "La probabilidad de obtener dos números primos es 1/2", correct: false },
+                    { text: "La probabilidad de obtener dos números iguales es 1/6", correct: true }
+                ]
+            },
+            {
+                question: "Si se escoge un número al azar entre los primeros 30 números naturales, ¿cuál es la probabilidad de que éste sea un número primo?",
+                answers: [
+                    { text: "1/30", correct: false },
+                    { text: "1/10", correct: false },
+                    { text: "1/3", correct: true },
+                    { text: "2/3", correct: false }
+                ]
+            },
+            {
+                question: "En una urna hay 14 fichas, en total, de colores blanco, rojo y negro. Si hay 5 fichas blancas y la probabilidad de sacar una ficha blanca o negra es 4/7, entonces ¿cuántas fichas son negras?",
+                answers: [
+                    { text: "3", correct: true },
+                    { text: "4", correct: false },
+                    { text: "5", correct: false },
+                    { text: "7", correct: false }
+                ]
+            },
+            {
+                question: "En una bolsa se encuentran 4 cubos blancos, 7 cubos azules y 9 cubos amarillos, todos de igual peso y tamaño. Si se extrae un cubo al azar, ¿cuál es la probabilidad de que este sea azul?",
+                answers: [
+                    { text: "13/20", correct: false },
+                    { text: "7/13", correct: false },
+                    { text: "7/20", correct: true },
+                    { text: "1/20", correct: false }
+                ]
+            }
+        ]; //Array de preguntas
 
         const questionElement = document.getElementById('question')
         const answerButtons = document.getElementById('answer-buttons')
         const nextButton = document.getElementById('next-btn')
-        const explanationContainer = document.getElementById('explanationContainer')
-        const explanation = document.getElementById('explanation')
 
         let currentQuestionIndex = 0;
         let score = 0;
 
-        function startQuiz(){
+        function startQuiz() {
             currentQuestionIndex = 0;
             score = 0;
-            nextButton.innerHTML = "Siguiente";
-            showQuestion()
+            nextButton.innerHTML = "Next";
+            showQuestion();
         }
 
-        function showQuestion(){
+        function showQuestion() {
             resetState();
             let currentQuestion = questions[currentQuestionIndex];
-            let questionNo = currentQuestionIndex + 1
-            questionElement.innerHTML = questionNo + ". " + currentQuestion.questionSanitized;
-            explanation.innerHTML = currentQuestion.explanationSanitized;
+            let questionNo = currentQuestionIndex + 1;
+            questionElement.innerHTML = questionNo + ". " + currentQuestion.question;
 
             currentQuestion.answers.forEach(answer => {
-                const button = document.createElement('button')
-
-                let text = new DOMParser().parseFromString(answer.textSanitized, "text/xml");
-                let textString;
-
-                // Check if parsing was successful
-                if (text.getElementsByTagName('parsererror').length === 0) {
-                    // Access text content using textContent
-                    textString = text.documentElement.textContent;
-                }
-
-                button.innerHTML = textString ? textString : answer.textSanitized;
-                button.classList.add('btn');
+                const button = document.createElement("button");
+                button.innerHTML = answer.text;
+                button.classList.add("btn");
                 answerButtons.appendChild(button);
-                if(answer.correct){
+                if (answer.correct) {
                     button.dataset.correct = answer.correct;
                 }
-                button.addEventListener('click', selectAnswer)
+                button.addEventListener("click", selectAnswer);
             })
-            // Re-render MathJax
-            MathJax.Hub.Queue(["Typeset", MathJax.Hub]);
         }
 
-        function resetState(){
-            explanationContainer.style.display = 'none'
-            nextButton.style.display = 'none';
-            while(answerButtons.firstChild){
+        function resetState() {
+            nextButton.style.display = "none";
+            while (answerButtons.firstChild) {
                 answerButtons.removeChild(answerButtons.firstChild);
-            }
+            };
         }
 
-        function selectAnswer(e){
+        function selectAnswer(e) {
             const selectedBtn = e.target;
-            const isCorrect = selectedBtn.dataset.correct === 'true';
-            if(isCorrect){
-                selectedBtn.classList.add('correct');
-                score++
+            const isCorrect = selectedBtn.dataset.correct === "true";
+            if (isCorrect) {
+                selectedBtn.classList.add("correct");
+                score++;
             } else {
-                selectedBtn.classList.add('incorrect')
+                selectedBtn.classList.add("incorrect");
             }
             Array.from(answerButtons.children).forEach(button => {
-                if(button.dataset.correct === 'true'){
-                    button.classList.add('correct')
+                if (button.dataset.correct === "true") {
+                    button.classList.add("correct");
                 }
-                button.disabled = 'true'
+                button.disabled = true;
             });
-
-            explanationContainer.style.display = 'block'
-            nextButton.style.display = 'block';
+            nextButton.style.display = "block";
         }
 
-        function showScore(){
+        function showScore() {
             resetState();
-            questionElement.innerHTML = `Has obtenido ${score} de ${questions.length} respuestas acertadas!`;
-            nextButton.innerHTML = 'Hacerlo nuevamente'
-            nextButton.style.display = 'block'
+            questionElement.innerHTML = "Tu puntuación fue " + score + " de " + questions.length;
+            nextButton.innerHTML = "Reintentar";
+            nextButton.style.display = "block";
         }
 
-        function handleNextButton(){
+        function handleNextButton() {
             currentQuestionIndex++;
-            if(currentQuestionIndex < questions.length){
+            if (currentQuestionIndex < questions.length) {
                 showQuestion();
             } else {
                 showScore();
             }
         }
 
-        nextButton.addEventListener('click', () => {
-            if(currentQuestionIndex < questions.length){
+        nextButton.addEventListener("click", () => {
+            if (currentQuestionIndex < questions.length) {
                 handleNextButton();
-            }else {
+            } else {
                 startQuiz();
             }
         })
 
-        if(questions.length > 0){
-            startQuiz();
-        }
+
+
+        startQuiz()
+
     </script>
 </body>
+
 </html>
